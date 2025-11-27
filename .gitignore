@@ -53,3 +53,8 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# IDE / Editor directories
+.vscode/
+.idea/
+*.code-workspace
