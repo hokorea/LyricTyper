@@ -2,17 +2,20 @@
 #include <windows.h>
 
 void type_print(const char *text, int delay_ms);
+void set_working_directory_to_exe_path();
 
-int main(void)
-{
+int main(void){
+    set_working_directory_to_exe_path();
+
     // 콘솔을 UTF-8로 설정 (한글 안깨지게)
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    FILE *fp = fopen("assets/lyrics.txt", "r");
+    FILE *fp = fopen("../assets/lyrics.txt", "r");
     if (fp == NULL) {
         printf("lyrics.txt 파일을 열 수 없습니다.\n");
         printf("assets 폴더에 lyrics.txt를 만들어 주세요.\n");
+        system("pause");
         return 1;
     }
 
@@ -46,5 +49,17 @@ void type_print(const char *text, int delay_ms){
         // if (text[i] == '\n' || text[i] == '\r') continue;
 
         Sleep(delay_ms);    // 글자 사이 딜레이(ms)
+    }
+}
+
+void set_working_directory_to_exe_path() {
+    char path[MAX_PATH];
+    GetModuleFileNameA(NULL, path, MAX_PATH);
+
+    // exe 경로에서 파일명 제거 → 디렉토리만 남김
+    char *slash = strrchr(path, '\\');
+    if (slash) {
+        *slash = '\0';
+        SetCurrentDirectoryA(path);
     }
 }
